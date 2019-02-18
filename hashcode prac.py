@@ -4,13 +4,16 @@ import numpy as np
 from tqdm import tqdm
 
 # Load input
+EXAMPLE = 'a_example.in'
 SMALL = 'b_small.in'
 MEDIUM = 'c_medium.in'
 BIG = 'd_big.in'
 
+in_file = BIG
+
 SCAN_RANGE_MIN = 0
 
-with open(BIG, 'r') as f:
+with open(in_file, 'r') as f:
     R, C, L, H = [int(x) for x in f.readline().split()]
     pizza = np.empty(shape=(R, C), dtype=np.bool)
     for r in range(R):
@@ -89,10 +92,17 @@ def solve():
         else:
             break
 
+def write_ans(out_name):
+    with open(out_name,'w') as out_file:
+        out_file.write(str(len(slice_list)) + '\n')
+        for (r, c, w, h) in slice_list:
+            out_file.write(str(r) + " " +  str(c) + " " + str(r + h) + " " + str(c + w) + "\n")
 
 solve()
 # print(slices)
 # print_ans()
+write_ans("out_" + in_file)
+
 score = calc_score()
 print(score, score / (R * C))
 
