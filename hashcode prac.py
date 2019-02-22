@@ -9,7 +9,7 @@ SMALL = 'b_small.in'
 MEDIUM = 'c_medium.in'
 BIG = 'd_big.in'
 
-in_file = BIG
+in_file = BIG 
 
 SCAN_RANGE_MIN = 0
 
@@ -24,6 +24,8 @@ slice_list = []
 
 def check_slice(r, c, w, h):
     if np.sum(slices[r:r + h, c:c + w] > -1) > 0:
+        return False
+    if (r+h-1) >= R or (w+c-1) >= C:
         return False
     area = w * h
     assert 2 * L <= area <= H
@@ -40,7 +42,7 @@ def put_slice(r, c, w, h):
 def print_ans():
     print(len(slice_list))
     for (r, c, w, h) in slice_list:
-        print(r, c, (r + h), (c + w))
+        print(r, c, (r + h-1), (c + w-1))
 
 
 def calc_score():
@@ -96,7 +98,7 @@ def write_ans(out_name):
     with open(out_name,'w') as out_file:
         out_file.write(str(len(slice_list)) + '\n')
         for (r, c, w, h) in slice_list:
-            out_file.write(str(r) + " " +  str(c) + " " + str(r + h) + " " + str(c + w) + "\n")
+            out_file.write(str(r) + " " +  str(c) + " " + str(r + h-1) + " " + str(c + w-1) + "\n")
 
 solve()
 # print(slices)
@@ -105,6 +107,8 @@ write_ans("out_" + in_file)
 
 score = calc_score()
 print(score, score / (R * C))
+
+print(R*C)
 
 _, ax = plt.subplots()
 ax.imshow(slices)
